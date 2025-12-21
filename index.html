@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>TRACKER</title>
+
+    <meta name="apple-mobile-web-app-title" content="TRACKER">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0D0D0D">
+
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22black%22/><text y=%22.9em%22 x=%2250%%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2280%22 font-weight=%22900%22 fill=%22white%22>T</text></svg>">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+      #splash {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #0D0D0D;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.6s ease, visibility 0.6s;
+      }
+
+      #splash-logo {
+        color: white;
+        font-family: -apple-system, sans-serif;
+        font-weight: 900;
+        font-size: 8vw;
+        letter-spacing: 20px;
+        /* Slower duration: 2.0s */
+        /* Cubic-bezier creates the 'perfect bounce' feel */
+        animation: engulf 2.0s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        opacity: 0;
+      }
+
+      @keyframes engulf {
+        0% { 
+          transform: scale(0.3); 
+          opacity: 0; 
+          filter: blur(15px); 
+          letter-spacing: 30px;
+        }
+        50% { 
+          opacity: 1; 
+          filter: blur(0px); 
+        }
+        70% { 
+          transform: scale(1.15); /* The "Engulf" peak */
+          letter-spacing: 12px;
+        }
+        100% { 
+          transform: scale(1); /* Settles back */
+          opacity: 1; 
+          letter-spacing: 8px; 
+        }
+      }
+
+      .splash-hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body style="background-color: #0D0D0D; margin: 0;">
+    <div id="splash">
+      <div id="splash-logo">TRACKER</div>
+    </div>
+
+    <div id="root"></div>
+    
+    <script type="module" src="/src/main.tsx"></script>
+
+    <script>
+      window.addEventListener('load', () => {
+        // We delay the removal slightly to let the 2s animation finish
+        setTimeout(() => {
+          document.getElementById('splash').classList.add('splash-hidden');
+        }, 2200); 
+      });
+    </script>
+  </body>
+</html>
