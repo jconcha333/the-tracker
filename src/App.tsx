@@ -275,8 +275,13 @@ export default function App() {
   };
 
   const saveSetEdit = async (id: string) => {
-    await theTracker.from('workout_sets').update({ weight_lbs: parseFloat(editSetValues.weight) || 0, reps: parseInt(editSetValues.reps) || 0 }).eq('id', id);
-    setEditingSetId(null); fetchDayHistory(); fetchInitialData();
+    const newWeight = parseFloat(editSetValues.weight) || 0;
+    const newReps = parseInt(editSetValues.reps) || 0;
+    // Update local state immediately so progress bar and display update without refresh
+    setHistory(prev => prev.map(s => s.id === id ? { ...s, weight_lbs: newWeight, reps: newReps } : s));
+    setEditingSetId(null);
+    await theTracker.from('workout_sets').update({ weight_lbs: newWeight, reps: newReps }).eq('id', id);
+    fetchInitialData();
   };
 
   const CATEGORY_ORDER = ['STRETCHING', 'STRENGTH', 'CORE', 'CARDIO'];
